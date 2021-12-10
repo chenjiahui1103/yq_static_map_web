@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak=D4m1Hw0g926umdKO2fBUzVjnDLTcDTy0"></script>
+    <title>地图展示</title>
+</head>
+<body>
+<button style="position:absolute;z-index:99999;" onclick="tagFlag()">简略/详细</button>
+<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+    function tagFlag(){
+        console.log(sessionStorage.getItem('target'));
+        if(sessionStorage.getItem('target') != 1){
+            sessionStorage.setItem("target",1);
+        }else{
+            sessionStorage.setItem("target",0);
+        }
+        window.location.reload();
+    }
+    var map = new BMapGL.Map("allmap");    // 创建Map实例
+    map.centerAndZoom(new BMapGL.Point(120.144692,30.348933), 13);  // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+    let info = [
+        '12月3日：晚餐在钱江新城平安金融中心八月荟与无症状感染者1等人聚餐',
+        '西湖文化广场站出站，19时30分步行至中山北路在水一方星辰棋牌室',
+        "12月4日：凌晨3时左右打车（车牌浙AT6323）回家，途中到杭州顶全便利店有限公司中山北路八店购物",
+        '12月4日12时打车（车牌浙AT0099）接其父亲，曾进入仁和街道东风4S店',
+        '12月4日13:30搭乘其父自驾车于14时许到达亲戚家（拱墅区大辰河府1幢）',
+        '12月4日16时自驾回到住处 拱墅区拱谢路111号谢村渣土码头',
+        '12月4日16:30与朋友同乘自驾车前往运河雅苑就餐',
+        '12月4日20时左右离开至DK会所（新天地店），凌晨左右打车（车牌浙ATG826）离开',
+        '12月5日：11时自驾回临安区桥岭村８组傅家头17号父母家中',
+        '12月5日午饭后在临安商城木之轩柜门店、陈行五金商行、万华广场二楼超市门口食果子零食铺、老北京糖葫芦店铺购物',
+        '12月5日13:40离开万华广场，返回父母家中',
+        '12月6日：早上自驾返回单位杭州菲尼装卸服务有限公司(拱墅区拱谢路111号谢村渣土码头)上班',
+        '12月6日17时自驾至鼎宏雀友汇棋牌室与无症状感染者1等吃饭、打牌',
+        '12月6日 24时自驾回住处',
+        '12月7日16:30左右到沙县小吃（温州路8号）吃饭,',
+        '12月7日回家途中17:10在顺丰大厦楼下全家购物',
+        '12月8日：未外出',
+        '12月9日：19时自驾抵达余杭区良渚街道全季酒店（祥园路），19:40许在附近邓州窝子面襄阳牛肉面馆吃饭，后集中隔离'
+    ];
+
+    let positionList = [
+        //[120.144692,30.348933],//'拱墅区拱谢路111号谢村渣土码头',
+        [120.218906,30.257356],//钱江新城平安金融中心
+        [120.144692,30.348933],//西湖文化广场站
+        [120.171733,30.285672],//杭州顶全便利店有限公司中山北路八店
+        [120.108313,30.398991],//仁和街道东风4S店
+        [120.139526,30.335415],//拱墅区大运宸府
+        [120.144692,30.348933],//'拱墅区拱谢路111号谢村渣土码头',
+        [120.152142,30.320113],//运河雅苑
+        [120.187943,30.332604],//DK会所（新天地店）
+        [119.600961,30.181088],//临安区桥岭村８组傅家头17号
+        [119.712507,30.227686],//万华广场
+        [119.600961,30.181088],//临安区桥岭村８组傅家头17号
+        [120.144692,30.348933],//'拱墅区拱谢路111号谢村渣土码头',
+        [120.185875,30.313649],//鼎宏雀友汇棋牌室
+        [120.144692,30.348933],//'拱墅区拱谢路111号谢村渣土码头',
+        [120.147551,30.326842],//沙县小吃
+        [120.150068,30.31927],//顺丰大厦
+        [120.144692,30.348933],//'拱墅区拱谢路111号谢村渣土码头',
+        [120.129732,30.34343],//良渚街道全季酒店（祥园路）
+    ];
+    let target=sessionStorage.getItem('target') == 1;
+    let pointList = [];
+    let count={};
+    for(let i=0;i<positionList.length;i++){
+        console.log(positionList[i][0],positionList[i][1]);
+
+        if(count[positionList[i][0]]== undefined ){
+            count[positionList[i][0]] =0;
+        }else{
+            count[positionList[i][0]] ++;
+        }
+        pointList[i]=new BMapGL.Point(positionList[i][0],positionList[i][1]);
+        let mark =new BMapGL.Marker(pointList[i])
+        let label = new BMapGL.Label(target?i+1:info[i], {
+            offset: new BMapGL.Size(-5+20*count[positionList[i][0]], -20+10*count[positionList[i][0]]),
+        });
+        mark.setLabel(label);
+        map.addOverlay(mark);
+    }
+    map.addOverlay(new BMapGL.Polyline(pointList, {strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5}));
+
+
+
+
+
+
+
+</script>
