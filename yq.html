@@ -20,6 +20,9 @@
 <div style="position:absolute; z-index:99999;">
     <button  onclick="tagFlag()">详情显示/隐藏</button>
     <button  onclick="changeLineWidth()">折线粗细</button>
+    <button  onclick="setOpenCenter2DIndex('杭州')">杭州</button>
+    <button  onclick="setOpenCenter2DIndex('上虞')">上虞</button>
+    <button  onclick="setOpenCenter2DIndex('宁波')">宁波</button>
     <span>点标记可看详细</span>
 </div>
 
@@ -28,6 +31,11 @@
 </body>
 </html>
 <script type="text/javascript">
+    function setOpenCenter2DIndex(index){
+
+        sessionStorage.setItem('center2DIndex',JSON.stringify({"杭州":[120.212197, 30.246949],"上虞":[120.8846,29.997369],"宁波":[121.684356,29.945018]}[index]))
+        window.location.reload();
+    }
     function changeLineWidth(){
         let lineWidth =parseInt(sessionStorage.getItem('lineWidth'));
         lineWidth = isNaN(lineWidth)?1:lineWidth;
@@ -48,9 +56,13 @@
         }
         window.location.reload();
     }
-
+    let center2DIndex=[120.212197, 30.246949];
+    if(sessionStorage.getItem("center2DIndex") != undefined){
+        center2DIndex = JSON.parse(sessionStorage.getItem("center2DIndex"));
+    }
     var map = new BMapGL.Map("allmap");    // 创建Map实例
-    map.centerAndZoom(new BMapGL.Point(120.212197, 30.246949), 13);  // 初始化地图,设置中心点坐标和地图级别
+
+    map.centerAndZoom(new BMapGL.Point(center2DIndex[0],center2DIndex[1]), 13);  // 初始化地图,设置中心点坐标和地图级别
     map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
     let allData = [
         {
