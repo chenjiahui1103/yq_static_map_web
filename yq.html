@@ -14,7 +14,7 @@
     </style>
     <script type="text/javascript"
             src="https://api.map.baidu.com/api?type=webgl&v=1.0&ak=D4m1Hw0g926umdKO2fBUzVjnDLTcDTy0"></script>
-    <title>12月感染者轨迹-杭州</title>
+    <title>12月感染者轨迹提醒-浙江区域</title>
 </head>
 <body>
 <div style="position:absolute; z-index:99999;">
@@ -23,7 +23,7 @@
     <button  onclick="setOpenCenter2DIndex('杭州')">杭州</button>
     <button  onclick="setOpenCenter2DIndex('上虞')">上虞</button>
     <button  onclick="setOpenCenter2DIndex('宁波')">宁波</button>
-    <span>点标记可看详细</span>
+    <p>点标记可看详细</p>
 </div>
 
 
@@ -733,7 +733,7 @@
         console.log(lineWidth);
         map.addOverlay(new BMapGL.Polyline(pointList, {
             strokeColor: getRandomColor(),
-            strokeWeight: lineWidth < 1 || isNaN(lineWidth)? 3:lineWidth,
+            strokeWeight: lineWidth < 1 || isNaN(lineWidth)? 1:lineWidth,
             strokeOpacity: 1
         }));
     }
