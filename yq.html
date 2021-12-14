@@ -380,6 +380,28 @@
             ]
         },
 
+        {
+            info:['据“浙江发布”消息，12月13日截至9时，杭州新增1例新冠肺炎确诊病例（轻型）。12月7日以来，杭州累计报告新冠肺炎确诊病例18例。人员情况和活动轨迹如下：\n' +
+            '\n' +
+            '确诊病例王某某，女，38岁\n' +
+            '\n' +
+            '现住址：上城区望江街道清江路清泰南苑2幢。\n' +
+            '\n' +
+            '工作单位：东古（浙江）调味食品有限公司，为7日报告的确诊病例闫某某同办公室同事，12月2-5日与其无接触。\n' +
+            '\n' +
+            '12月6日\n' +
+            '\n' +
+            '与闫某某同办公室上班，12:20左右到宋姐之望江面馆就餐，18时许步行至瑜悦伽园瑜伽馆（望江街道之江路945号）上课1小时左右，后电瓶车回家。\n' +
+            '\n' +
+            '12月7日\n' +
+            '\n' +
+            '未外出，后集中隔离。'],
+            positionList: [
+                [120.193776,30.250929],
+                [120.212754,30.237108],
+            ]
+        },
+
         //宁波-------------------宁波-------------------宁波-------------------宁波-------------------宁波------------------
         {
             info: [
@@ -1078,7 +1100,8 @@
                 count[positionList[i][0]]++;
             }
             pointList[i] = new BMapGL.Point(positionList[i][0], positionList[i][1]);
-            let mark = new BMapGL.Marker(pointList[i])
+            let yqIcon = new BMapGL.Icon('./yqkz.jpg',new BMapGL.Size(23,23))
+            let mark = new BMapGL.Marker(pointList[i],{icon:yqIcon})
             let info = data.info[i] != undefined ? data.info[i]:data.info[0];
             let label = new BMapGL.Label((i + 1) + '. ' + info, {
                 offset: new BMapGL.Size(-5 + 20 * count[positionList[i][0]], -20 + 10 * count[positionList[i][0]]),
@@ -1094,7 +1117,7 @@
             map.addOverlay(mark);
         }
         let lineWidth =parseInt(sessionStorage.getItem('lineWidth'));
-        console.log(lineWidth);
+
         map.addOverlay(new BMapGL.Polyline(pointList, {
             strokeColor: getRandomColor(),
             strokeWeight: lineWidth < 1 || isNaN(lineWidth)? 1:lineWidth,
